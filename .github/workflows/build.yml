@@ -1,0 +1,42 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v7
+
+      - name: Build all exercises
+        run: make
+
+      - name: Test introductory modules
+        run: |
+          test "$(./cpp-00/ex00/megaphone 'hello, C++')" = 'HELLO, C++'
+          ./cpp-01/ex02/reference >/dev/null 2>&1
+          ./cpp-04/ex02/ex02 >/dev/null 2>&1
+
+      - name: Test templates and containers
+        run: |
+          ./cpp-07/ex00/ex00 >/dev/null 2>&1
+          ./cpp-07/ex01/ex01 >/dev/null 2>&1
+          ./cpp-07/ex02/ex02 >/dev/null 2>&1
+          ./cpp-08/ex01/ex01 >/dev/null 2>&1
+          ./cpp-08/ex02/ex02 >/dev/null 2>&1
+
+      - name: Test module 09 algorithms
+        run: |
+          test "$(./cpp-09/ex01/RPN '8 9 * 9 - 9 - 9 - 4 - 1 +')" = '42'
+          output=$(./cpp-09/ex02/PmergeMe 9 3 7 1 8 2 6 5 4)
+          printf '%s\n' "$output" | grep -q '^After:  1 2 3 4 5 6 7 8 9$'
+          if ./cpp-09/ex02/PmergeMe 3 0 2 >/dev/null 2>&1; then
+            exit 1
+          fi

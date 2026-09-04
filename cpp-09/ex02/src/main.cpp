@@ -14,7 +14,7 @@ T  init_array(int ac, char **av)
   {
     char  *end;
     long long  n = std::strtol(av[i], &end, 10);
-    if (end == av[i] || *end != '\0' || n < 0 ||
+    if (end == av[i] || *end != '\0' || n <= 0 ||
       n > std::numeric_limits<int>::max())
       throw std::runtime_error("Error");
     container.push_back(n);
@@ -43,6 +43,7 @@ int main(int ac, char **av)
   }
   catch (std::exception const& e) {
     std::cerr << e.what() << std::endl;
+    return 1;
   }
   return 0;
 }

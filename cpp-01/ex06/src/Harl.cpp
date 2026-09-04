@@ -37,14 +37,17 @@ void Harl::complain(std::string level)
 	{
 		case 0:
 			debug();
+			/* fall through */
 		case 1:
 			if (i != 1)
 				std::cout << std::endl;
 			info();
+			/* fall through */
 		case 2:
 			if (i != 2)
 				std::cout << std::endl;
 			warning();
+			/* fall through */
 		case 3:
 			if (i != 3)
 				std::cout << std::endl;
